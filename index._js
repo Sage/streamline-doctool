@@ -39,8 +39,12 @@ function exists(_, p) {
 /// * `doc = docTool.generate(_, path)`  
 ///   extracts documentation comments from file `path`
 exports.generate = function(_, path, options) {
-	options = options || {}
+	options = options || {};
 	var isWin32 = process.platform === 'win32';
+
+	function fixPath(path) {
+		return path.replace(/streamline\/lib\/compiler\/flows/, 'streamline/lib/util/flows');
+	}
 
 	function _generate(_, path, dontSave) {
 		// lstat not available on Windows
@@ -98,7 +102,7 @@ exports.generate = function(_, path, options) {
 				if (inside && inSource) doc += "```\n\n";
 				if (doc) {
 					if (!tocEntry.title) throw new Error(path + ": doc error: title missing");
-					var p = path.substring(0, path.lastIndexOf('.')) + ".md";
+					var p = fixPath(path.substring(0, path.lastIndexOf('.')) + ".md");
 					fs.writeFile(p, doc, "utf8", _);
 					if (options.verbose) console.log("generated " + p);
 					return [tocEntry];
@@ -125,7 +129,7 @@ exports.generate = function(_, path, options) {
 				text += toc.filter(function(entry) {
 					return !entry.example;
 				}).map(function(entry) {
-					var p = entry.path.substring(entry.path.lastIndexOf('node_modules') + 13);
+					var p = fixPath(entry.path.substring(entry.path.lastIndexOf('node_modules') + 13));
 					var href = p.substring(p.indexOf('/') + 1) + '.md';
 					return '* [' + p + '](' + href + ')  \n  ' + entry.title.substring(2) + '\n';
 				}).join('');
@@ -138,7 +142,11 @@ exports.generate = function(_, path, options) {
 	}
 	// options.verbose = true;
 	_generate(_, path);
+};
+if (process.argv[1] && process.argv[1].indexOf("streamline-doctool") >= 0) {
+	exports.generate(_ >> function(err) {
+		if (err) console.error(err);
+	}, fsp.join(process.cwd(), process.argv[2] || '.'), {
+		verbose: true
+	});
 }
-if (process.argv[1] && process.argv[1].indexOf("streamline-doctool") >= 0) exports.generate(_, fsp.join(process.cwd(), process.argv[2] || '.'), {
-	verbose: true
-});
