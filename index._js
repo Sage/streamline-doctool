@@ -145,7 +145,7 @@ exports.generate = function(_, path, options) {
 	_generate(_, path);
 };
 if (process.argv[1] && process.argv[1].indexOf("streamline-doctool") >= 0) {
-	exports.generate(_ >> function(err) {
+	exports.generate(function(err) {
 		if (err) console.error(err);
 	}, fsp.join(process.cwd(), process.argv[2] || '.'), {
 		verbose: true
