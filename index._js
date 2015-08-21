@@ -110,11 +110,12 @@ exports.generate = function(_, path, options) {
 			}
 			return null;
 		} else if (stat.isDirectory() && (isWin32 || !stat.isSymbolicLink())) {
-			var split = path.split("/");
+			var split = path.split(/[\/\\]/);
 			var isPackage = split[split.length - 2] == 'node_modules';
 			var toc = [];
 			var files = fs.readdir(path, _).sort();
 			for (var i = 0; i < files.length; i++) {
+				if (files[i] === 'node_modules') continue;
 				var entries = _generate(_, path + "/" + files[i], isPackage || dontSave);
 				if (entries) toc = toc.concat(entries);
 			}
