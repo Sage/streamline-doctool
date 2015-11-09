@@ -30,12 +30,9 @@
 /// var docTool = require('streamline-doctool')
 /// ```
 /// 
-var fs = require('streamline-fs');
+var fs = require('fs');
 var fsp = require('path');
 
-function exists(_, p) {
-	return fs.exists(p, _);
-}
 /// * `doc = docTool.generate(_, path)`  
 ///   extracts documentation comments from file `path`
 exports.generate = function(_, path, options) {
@@ -121,7 +118,7 @@ exports.generate = function(_, path, options) {
 			}
 			if (isPackage && !dontSave && toc.length) {
 				var text;
-				if (exists(_, path + '/package.json')) {
+				if (fs.exists(path + '/package.json', _, _)) {
 					var pkg = JSON.parse(fs.readFile(path + '/package.json', 'utf8', _));
 					text = '# ' + pkg.name + '\n\n' + pkg.description + '\n\n';
 				} else {
