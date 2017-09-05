@@ -14,7 +14,7 @@
 /// _node streamline-doctool [path]
 /// ```
 /// 
-/// Extracts documentation comments from `.js` and `._js` files and generates `API.md` file 
+/// Extracts documentation comments from `.js`, `._js` and `.ts` files and generates `API.md` file 
 /// under package root.
 /// 
 /// Top of source file must contain `/// !doc` marker to enable doc extraction.  
@@ -48,7 +48,7 @@ exports.generate = function(_, path, options) {
 		var stat = (isWin32 ? fs.stat : fs.lstat)(path, _);
 		if (stat.isFile()) {
 			var match;
-			if ((match = /^(.*)\._?(js|coffee)$/.exec(path)) && path.indexOf('--fibers.js') < 0) {
+			if ((match = /^(.*)\._?(ts|js|coffee)$/.exec(path)) && path.indexOf('--fibers.js') < 0) {
 				var inside, save, example, inSource, tocEntry = {
 					path: match[1],
 					description: ''
