@@ -1,7 +1,7 @@
 {
   "name": "streamline-doctool",
   "description": "simple documentation tool for streamline.js",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "repository": {
     "type": "git",
     "url": "git://github.com/Sage/streamline-doctool.git"
