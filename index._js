@@ -33,7 +33,7 @@
 var fs = require('fs');
 var fsp = require('path');
 
-const exists = (path, cb) => fs.exists(result => cb(null, result));
+const exists = (path, cb) => fs.exists(path, result => cb(null, result));
 /// * `doc = docTool.generate(_, path)`  
 ///   extracts documentation comments from file `path`
 exports.generate = function(_, path, options) {
